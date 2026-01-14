@@ -1,7 +1,7 @@
 -- example script by https://github.com/mstudio45/LinoriaLib/blob/main/Example.lua and modified by deivid
 -- You can suggest changes with a pull request or something
 
-local repo = "https://raw.githubusercontent.com/xXnikotosYTXx/-/refs/heads/main/"
+local repo = "https://raw.githubusercontent.com/xXnikotosYTXx/-/main/"
 local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
 local ThemeManager = loadstring(game:HttpGet(repo .. "addons/ThemeManager.lua"))()
 local SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))()
@@ -256,10 +256,11 @@ LeftGroupBox:AddDivider()
 	Compact will do the same thing
 ]]
 LeftGroupBox:AddSlider("MySlider", {
-	Text = "This is my slider!",
-	Default = 0,
+	Text = "Slider float",
+	Description = "This is item description",
+	Default = 50,
 	Min = 0,
-	Max = 5,
+	Max = 100,
 	Rounding = 1,
 	Compact = false,
 
@@ -271,7 +272,7 @@ LeftGroupBox:AddSlider("MySlider", {
 	DisabledTooltip = "I am disabled!", -- Information shown when you hover over the slider while it's disabled
 
 	Disabled = false, -- Will disable the slider (true / false)
-	Visible = true, -- Will make the slider invisible (true / false)
+	Visible = true, -- Will make the toggle invisible (true / false)
 })
 
 -- Options is a table added to getgenv() by the library
