@@ -196,6 +196,7 @@ local Templates = {
     },
     Slider = {
         Text = "Slider",
+        Description = "",
         Default = 0,
         Min = 0,
         Max = 100,
@@ -3020,6 +3021,7 @@ do
 
         local Slider = {
             Text = Info.Text,
+            Description = Info.Description,
             Value = Info.Default,
             Min = Info.Min,
             Max = Info.Max,
@@ -3035,77 +3037,98 @@ do
             Changed = Info.Changed,
 
             Disabled = Info.Disabled,
-            Visible = Info.Visible,
+            Visible = Slider.Visible,
 
             Type = "Slider",
         }
 
         local Holder = New("Frame", {
             BackgroundTransparency = 1,
-            Size = UDim2.new(1, 0, 0, Info.Compact and 13 or 31),
+            Size = UDim2.new(1, 0, 0, (Slider.Description ~= "" and 48 or 40)),
             Visible = Slider.Visible,
             Parent = Container,
         })
 
-        local SliderLabel
-        if not Info.Compact then
-            SliderLabel = New("TextLabel", {
+        local TopRow = New("Frame", {
+            BackgroundTransparency = 1,
+            Size = UDim2.new(1, 0, 0, 14),
+            Parent = Holder,
+        })
+
+        local SliderLabel = New("TextLabel", {
+            BackgroundTransparency = 1,
+            Size = UDim2.new(1, 0, 1, 0),
+            Text = Slider.Text,
+            TextSize = 14,
+            TextXAlignment = Enum.TextXAlignment.Left,
+            Parent = TopRow,
+        })
+
+        local ValueLabel = New("TextLabel", {
+            BackgroundTransparency = 1,
+            Size = UDim2.new(1, 0, 1, 0),
+            Text = "",
+            TextSize = 14,
+            TextTransparency = 0.5,
+            TextXAlignment = Enum.TextXAlignment.Right,
+            Parent = TopRow,
+        })
+
+        local DescriptionLabel
+        if Slider.Description ~= "" then
+            DescriptionLabel = New("TextLabel", {
                 BackgroundTransparency = 1,
-                Size = UDim2.new(1, 0, 0, 14),
-                Text = Slider.Text,
-                TextSize = 14,
+                Size = UDim2.new(1, 0, 0, 12),
+                Text = Slider.Description,
+                TextSize = 12,
+                TextTransparency = 0.6,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 Parent = Holder,
             })
         end
 
+        New("UIListLayout", {
+            Padding = UDim.new(0, 4),
+            SortOrder = Enum.SortOrder.LayoutOrder,
+            Parent = Holder,
+        })
+
         local Bar = New("TextButton", {
             Active = not Slider.Disabled,
             AnchorPoint = Vector2.new(0, 1),
             BackgroundColor3 = "MainColor",
-            BorderColor3 = "OutlineColor",
-            BorderSizePixel = 1,
+            BorderSizePixel = 0,
             Position = UDim2.fromScale(0, 1),
-            Size = UDim2.new(1, 0, 0, 13),
+            Size = UDim2.new(1, 0, 0, 6),
             Text = "",
             Parent = Holder,
         })
-
-        local DisplayLabel = New("TextLabel", {
-            BackgroundTransparency = 1,
-            Size = UDim2.fromScale(1, 1),
-            Text = "",
-            TextSize = 14,
-            ZIndex = 2,
+        New("UICorner", {
+            CornerRadius = UDim.new(1, 0),
             Parent = Bar,
-        })
-        New("UIStroke", {
-            ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual,
-            Color = "Dark",
-            LineJoinMode = Enum.LineJoinMode.Miter,
-            Parent = DisplayLabel,
         })
 
         local Fill = New("Frame", {
             BackgroundColor3 = "AccentColor",
+            BorderSizePixel = 0,
             Size = UDim2.fromScale(0.5, 1),
             Parent = Bar,
-
-            DPIExclude = {
-                Size = true,
-            },
+        })
+        New("UICorner", {
+            CornerRadius = UDim.new(1, 0),
+            Parent = Fill,
         })
 
         local Thumb = New("Frame", {
             AnchorPoint = Vector2.new(0.5, 0.5),
-            BackgroundColor3 = "FontColor",
+            BackgroundColor3 = "White",
             Position = UDim2.fromScale(0.5, 0.5),
-            Size = UDim2.fromOffset(10, 10),
+            Size = UDim2.fromOffset(12, 12),
             ZIndex = 3,
             Parent = Bar,
         })
         New("UICorner", {
-            CornerRadius = UDim.new(0, 3),
+            CornerRadius = UDim.new(0, 4),
             Parent = Thumb,
         })
         New("UIStroke", {
@@ -3136,21 +3159,8 @@ do
                 return
             end
 
-            if Info.Compact then
-                DisplayLabel.Text = string.format("%s: %s%s%s", Slider.Text, Slider.Prefix, Slider.Value, Slider.Suffix)
-            elseif Info.HideMax then
-                DisplayLabel.Text = string.format("%s%s%s", Slider.Prefix, Slider.Value, Slider.Suffix)
-            else
-                DisplayLabel.Text = string.format(
-                    "%s%s%s/%s%s%s",
-                    Slider.Prefix,
-                    Slider.Value,
-                    Slider.Suffix,
-                    Slider.Prefix,
-                    Slider.Max,
-                    Slider.Suffix
-                )
-            end
+            local Display = string.format("%s%s%s", Slider.Prefix, Slider.Value, Slider.Suffix)
+            ValueLabel.Text = Display
 
             local X = (Slider.Value - Slider.Min) / (Slider.Max - Slider.Min)
             TweenService:Create(Fill, Library.TweenInfo, {
