@@ -3057,7 +3057,7 @@ do
 
         local SliderLabel = New("TextLabel", {
             BackgroundTransparency = 1,
-            Size = UDim2.new(1, 0, 1, 0),
+            Size = UDim2.fromScale(1, 1),
             Text = Slider.Text,
             TextSize = 14,
             TextXAlignment = Enum.TextXAlignment.Left,
@@ -3066,10 +3066,9 @@ do
 
         local ValueLabel = New("TextLabel", {
             BackgroundTransparency = 1,
-            Size = UDim2.new(1, 0, 1, 0),
+            Size = UDim2.fromScale(1, 1),
             Text = "",
             TextSize = 14,
-            TextTransparency = 0.5,
             TextXAlignment = Enum.TextXAlignment.Right,
             Parent = TopRow,
         })
@@ -3123,7 +3122,7 @@ do
             AnchorPoint = Vector2.new(0.5, 0.5),
             BackgroundColor3 = "White",
             Position = UDim2.fromScale(0.5, 0.5),
-            Size = UDim2.fromOffset(12, 12),
+            Size = UDim2.fromOffset(14, 14),
             ZIndex = 3,
             Parent = Bar,
         })
@@ -3133,7 +3132,7 @@ do
         })
         New("UIStroke", {
             Color = "Dark",
-            Thickness = 1,
+            Thickness = 1.5,
             Parent = Thumb,
         })
 
